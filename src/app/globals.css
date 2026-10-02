@@ -8,12 +8,58 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-playfair), ui-serif, Georgia, serif;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 6px 15px rgba(227,0,74,0.4);
+  }
+  50% {
+    transform: scale(1.04);
+    box-shadow: 0 15px 25px rgba(227,0,74,0.7);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2.5s infinite ease-in-out;
+}
+
+@keyframes float-premium {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+}
+
+.animate-float-premium {
+  animation: float-premium 5s ease-in-out infinite;
+}
+
+@keyframes fade-in-up {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+@keyframes heartbeat-premium {
+  0%, 100% { transform: scale(1); }
+  15% { transform: scale(1.06); text-shadow: 0 0 20px rgba(192, 16, 74, 0.5); }
+  30% { transform: scale(1); text-shadow: none; }
+  45% { transform: scale(1.06); text-shadow: 0 0 20px rgba(192, 16, 74, 0.5); }
+  60% { transform: scale(1); text-shadow: none; }
+}
+
+.animate-heartbeat-premium {
+  animation: heartbeat-premium 4s ease-in-out infinite;
+  display: inline-block;
 }
