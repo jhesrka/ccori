@@ -104,8 +104,14 @@ export default function Home() {
   const handleOrderClick = (e: React.MouseEvent) => {
     e.preventDefault();
     
-    if (!nombre || !selectedNeighborhood || !direccion || !metodoPago) {
-      alert("Por favor, completa todos los campos del formulario para enviar tu pedido.");
+    const faltantes = [];
+    if (!nombre) faltantes.push("Nombre y Apellido");
+    if (!selectedNeighborhood) faltantes.push("Sector");
+    if (!direccion && !coordenadas) faltantes.push("Dirección o Ubicación en mapa");
+    if (!metodoPago) faltantes.push("Método de Pago");
+
+    if (faltantes.length > 0) {
+      alert(`Por favor, completa los siguientes campos para enviar tu pedido:\n\n- ${faltantes.join("\n- ")}`);
       return;
     }
 
