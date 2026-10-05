@@ -3,6 +3,9 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { ShoppingCart, Truck, CreditCard, MessageCircle, DollarSign, Lock, ShieldCheck, MapPin, Gift } from "lucide-react";
+import dynamic from "next/dynamic";
+
+const MapSelector = dynamic(() => import('../components/MapSelector'), { ssr: false });
 
 export default function Home() {
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -19,6 +22,8 @@ export default function Home() {
   const [nombre, setNombre] = useState("");
   const [direccion, setDireccion] = useState("");
   const [metodoPago, setMetodoPago] = useState("");
+  const [coordenadas, setCoordenadas] = useState<{ lat: number, lng: number } | null>(null);
+  const [isMapOpen, setIsMapOpen] = useState(false);
 
   // Zonas de cobertura
   const freeZones = ["Atucucho", "San Carlos", "Cotocollao", "La Florida", "El Bosque", "Rumipamba", "Cochapamba", "Roldós"];
@@ -125,7 +130,7 @@ export default function Home() {
 👤 *Cliente:* ${nombre}
 📍 *Sector:* ${selectedNeighborhood}
 🏠 *Dirección:* ${direccion}
-💳 *Pago:* ${metodoPago}
+${coordenadas ? `🗺️ *Ubicación GPS:* https://maps.google.com/?q=${coordenadas.lat},${coordenadas.lng}\n` : ''}💳 *Pago:* ${metodoPago}
 
 🛍️ *RESUMEN DE ORDEN:*
 - Perfume Ccori Rosé: $37.00
@@ -427,9 +432,25 @@ ${promoType}`;
                 value={direccion}
                 onChange={(e) => setDireccion(e.target.value)}
                 placeholder="Dirección exacta de entrega" 
-                className="w-full pl-10 pr-3 py-3 rounded-lg border border-gray-200 text-sm focus:outline-none focus:border-pink-300 bg-gray-50" 
+                className="w-full pl-10 pr-[140px] py-3 rounded-lg border border-gray-200 text-sm focus:outline-none focus:border-pink-300 bg-gray-50" 
               />
+              <div className="absolute inset-y-0 right-1 flex items-center">
+                <button 
+                  type="button"
+                  onClick={() => setIsMapOpen(true)}
+                  className="bg-pink-100 text-[#C71550] text-xs font-bold px-3 py-1.5 rounded-md hover:bg-pink-200 transition-colors flex items-center gap-1"
+                >
+                  <MapPin size={14} />
+                  Ubicar en mapa
+                </button>
+              </div>
             </div>
+            {coordenadas && (
+              <div className="text-xs text-green-600 flex items-center gap-1 mt-1 pl-1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+                Ubicación GPS guardada
+              </div>
+            )}
             
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -523,6 +544,17 @@ ${promoType}`;
           </div>
         </div>
       </section>
+
+      {isMapOpen && (
+        <MapSelector 
+          initialLocation={coordenadas}
+          onConfirm={(lat, lng) => {
+            setCoordenadas({ lat, lng });
+            setIsMapOpen(false);
+          }}
+          onCancel={() => setIsMapOpen(false)}
+        />
+      )}
     </div>
   );
 }
