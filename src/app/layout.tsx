@@ -15,6 +15,28 @@ const montserrat = Montserrat({
 export const metadata: Metadata = {
   title: "Ccori Rosé - Yanbal",
   description: "Un aroma moderno y femenino que resalta tu esencia.",
+  openGraph: {
+    title: "Ccori Rosé - Yanbal",
+    description: "Un aroma moderno y femenino que resalta tu esencia.",
+    url: "https://ccori.vercel.app",
+    siteName: "Ccori Rosé",
+    images: [
+      {
+        url: "/ccori.jpeg",
+        width: 1200,
+        height: 630,
+        alt: "Perfume Ccori Rosé - Yanbal",
+      },
+    ],
+    locale: "es_ES",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Ccori Rosé - Yanbal",
+    description: "Un aroma moderno y femenino que resalta tu esencia.",
+    images: ["/ccori.jpeg"],
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
